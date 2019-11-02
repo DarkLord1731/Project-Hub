@@ -1,0 +1,8 @@
+AddHandler php7-script .html .htm
+
+RewriteEngine On
+RewriteRule ^project/([0-9]+)/([0-9a-zA-Z-.]+)$ project.html?project_id=$1
+RewriteRule ^category/([0-9]+)/([0-9a-zA-Z-]+)$ category.html?category_id=$1
+RewriteRule ^buy/([0-9]+)/([0-9a-zA-Z-]+)$ buy-project.html?project_id=$1
+RewriteRule ^project/edit/([0-9]+)/([0-9a-zA-Z-]+)$ edit-project.html?project_id=$1
+RewriteRule ^category category.html

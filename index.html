@@ -1,0 +1,149 @@
+<?php include 'header.php'?>
+
+<!-- slider_area_start -->
+<div class="slider_area ">
+    <div class="single_slider d-flex align-items-center justify-content-center slider_bg_1">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-xl-6 col-md-6">
+                    <div class="illastrator_png">
+                        <img src="/img/banner/edu_ilastration.png" alt="">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6">
+                    <div class="slider_info">
+                        <h3>Find any <br>
+                            Electronic project <br>
+                            On Project Hub
+                        </h3>
+                        <?php if(isset($_SESSION['signed_in'])):?>
+                            <a href="/create_post.html" class="boxed_btn">Post a new Project</a>
+                    	<?php endif?>
+                        <a href="#popular_projects" class="boxed_btn">Browse Projects</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- slider_area_end -->
+
+<!-- popular_courses_start -->
+<div class="popular_courses"  id="popular_projects">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="section_title text-center mb-100">
+                    <h3>Popular Projects</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="course_nav">
+                    <nav>
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All Projects</a>
+                            </li>
+                            <?php
+                            $categories = get_category_list();
+                            foreach($categories as $category):?>
+                                <li class="nav-item">
+                                <a class="nav-link" id="<?php echo $category['id']?>-tab" data-toggle="tab" href="#<?php echo $category['id']?>" 
+                                		role="tab" aria-controls="<?php echo $category['id']?>" aria-selected="false"><?php echo $category['name']?></a>
+                                </li>
+                            <?php endforeach?>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="all_courses">
+        <div class="container">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="row">
+                        <?php
+                        $para['limit'] = 6;
+                        $projects = get_projects($para);
+                        foreach($projects as $project):?>
+                            <div class="col-xl-4 col-lg-4 col-md-6">
+                                <div class="single_courses">
+                                    <div class="thumb">
+                                        <a href="<?php echo $url?>">
+                                            <img src="<?php echo $project['thumbnail']?>" alt="" height=250>
+                                        </a>
+                                    </div>
+                                    <div class="courses_info">
+                                        <span><?php echo $project['user_name']?></span>
+                                        <h3><a href="/project/<?php echo $project['project_id']?>/<?php echo preg_replace('/\s+/', '-', $project['title'])?>"><?php echo $project['title']?></a></h3>
+                                        <div class="star_prise d-flex justify-content-between">
+                                            <div class="star">
+					                        	<?php for ($x=0; $x < $project['rating']; $x++):?>
+					                            	<i class="flaticon-mark-as-favorite-star"> </i>
+                                                <?php endfor?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach?>
+                        <div class="col-xl-12">
+                            <div class="more_courses text-center">
+                                <a href="/category" class="boxed_btn_rev">More Projects</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <?php
+                $categories = get_category_list();
+                foreach($categories as $category):
+                    $para['limit'] = 6;
+                    $para['category_id'] = $category['id'];
+                    $projects = get_projects($para);?>
+
+                    <div class="tab-pane fade show" id="<?php echo $category['id']?>" role="tabpanel" aria-labelledby="<?php echo $category['id']?>-tab">
+                        <div class="row">
+
+                        <?php foreach($projects as $project):?>
+                            <div class="col-xl-4 col-lg-4 col-md-6">
+                                <div class="single_courses">
+                                    <div class="thumb">
+                                        <a href="<?php echo $url?>">
+                                            <img src="<?php echo $project['thumbnail']?>" alt="" height=250>
+                                        </a>
+                                    </div>
+                                    <div class="courses_info">
+                                        <span><?php echo $project['user_name']?></span>
+                                        <h3><a href="/project/<?php echo $project['project_id']?>/<?php echo preg_replace('/\s+/', '-', $project['title'])?>"><?php echo $project['title']?></a></h3>
+                                        <div class="star_prise d-flex justify-content-between">
+                                            <div class="star">
+                                                <?php for ($x=0; $x < $project['rating']; $x++):?>
+                                                    <i class="flaticon-mark-as-favorite-star"> </i>
+                                                <?php endfor?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach?>
+                            <div class="col-xl-12">
+                                <div class="more_courses text-center">
+                                    <a href="/category/<?php echo $category['id']?>/<?php echo preg_replace('/\s+/', '-', $category['name'])?>" class="boxed_btn_rev">More Projects</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach?>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- popular_courses_end-->
+
+<?php include 'footer.php'?>

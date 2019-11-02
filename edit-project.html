@@ -1,0 +1,71 @@
+<?php include 'header.php';?>
+
+<?php
+$para = array();
+if(isset($_GET['project_id']))
+  $para['project_id'] = $_GET['project_id'];
+
+$project = get_projects($para);
+$projects = get_projects();
+?>
+
+<!-- bradcam_area_start -->
+<div class="bradcam_area breadcam_bg overlay2">
+   <h3>Edit Project</h3>
+</div>
+<!-- bradcam_area_end -->
+
+<!--================Blog Area =================-->
+<section class="blog_area single-post-area section-padding">
+  <div class="container">
+     <div class="row">
+        <div class="col-lg-8 posts-list">
+           <div class="comment-form">
+              <h4>Project details</h4>
+              <form class="form-contact comment_form" id="newPostForm" method="POST" action="/edit_project.php">
+                 <div class="row">
+                    <div class="col-sm-6">
+                       <div class="form-group">
+                          <select class="form-control" name="category" id="category" type="int">
+                            <?php
+                              $categories = get_category_list();
+                              foreach($categories as $category)
+                                echo '<option value="' . $category['id'] . '">' . $category['name'] . '</option>';
+                            ?>
+                          </select>
+                       </div>
+                    </div>
+                    <div class="col-12">
+                       <div class="form-group">
+                          <input class="form-control" name="title" id="title" type="text" placeholder="Project Title" value="<?php echo $project['title']?>">
+                       </div>
+                    </div>
+                    <div class="col-12">
+                       <div class="form-group">
+                          <textarea class="form-control w-100" name="description" id="description" cols="30" rows="15" 
+                            placeholder="Project Description"><?php echo $project['content']?></textarea>
+                       </div>
+                    </div>
+                    <div class="col-12">
+                       <div class="form-group">
+                          <input class="form-control" name="youtube_video_id" id="youtube_video_id" type="text" placeholder="Project Youtube Video ID" value="<?php echo $project['video']?>">
+                       </div>
+                    </div>
+                    <div class="col-12">
+                       <div class="form-group">
+                          <input class="form-control" name="logo_url" id="logo_url" type="url" placeholder="Project Logo URL"  value="<?php echo $project['thumbnail']?>">
+                       </div>
+                    </div>
+                    <input type="hidden" name="project_id" value=<?php echo $_GET["project_id"]?> />
+                 <div class="form-group">
+                    <button type="submit" class="button button-contactForm btn_1 boxed-btn">Update</button>
+                 </div>
+              </form>
+           </div>
+        </div>
+     </div>
+  </div>
+</section>
+<!--================ Blog Area end =================-->
+
+<?php include 'footer.php'?>

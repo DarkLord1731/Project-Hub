@@ -1,0 +1,110 @@
+<?php include 'header.php';?>
+
+<?php
+$project = get_projects($_GET);
+?>
+
+<!-- bradcam_area_start -->
+<div class="courses_details_banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="course_text">
+                    <h3><?php echo $project['title']?></h3>
+                    <div class="rating">
+                      <?php
+                        for ($x=0; $x < $project['rating']; $x++)
+                          echo '<i class="flaticon-mark-as-favorite-star"> </i>';
+                      ?>
+                    </div>
+                    <br>
+                    <a href="/buy/<?php echo $project['project_id']?>/<?php echo preg_replace('/\s+/', '-', $project['title'])?>" class="boxed_btn">Buy Project $<?php echo $project['price']?></a>
+                </div>
+            </div>
+            <iframe width="460" height="255" src="https://www.youtube.com/embed/<?php echo $project['video']?>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+<!-- bradcam_area_end -->
+
+<!--================Blog Area =================-->
+<section class="blog_area single-post-area section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 posts-list">
+                <div class="single-post">
+                    <div class="feature-img">
+                        <img class="img-fluid" src="<?php echo $project['thumbnail']?>" alt="">
+                    </div>
+                    <div class="blog_details">
+                        <p class="excert">
+                            <?php echo $project['content']?>
+                        </p>
+                    </div>
+                </div>
+                <div class="navigation-top">
+                    <div class="d-sm-flex justify-content-between text-center">
+                    	<?php if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] && $_SESSION['user_id'] == $project['user_id']):?>
+                          <a href="/project/edit/<?php echo $project['project_id']?>/<?php echo preg_replace('/\s+/', '-', $project['title'])?>"><button class="like-info genric-btn success radius">Edit</button></a>
+                          <a href="/delete-project.php?project_id=<?php echo $project['project_id']?>"><button class="social-icons genric-btn danger radius">Delete</button></a>
+                    	<?php endif?>
+                    </div>
+                </div>
+                <div class="blog-author">
+                    <div class="media align-items-center">
+                        <img src="/img/blog/author.png" alt="">
+                        <div class="media-body">
+                            <a href="#"><h4><?php echo $project['user_name']?></h4></a>
+                            <p><?php echo $project['bio']?></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="comments-area">
+                    <?php
+                      $comments = get_comments($project['project_id']);
+                      echo '<h4>' . count($comments) . ' Comments</h4>';
+                      foreach($comments as $comment) {
+                        echo '<div class="comment-list">
+                           <div class="single-comment justify-content-between d-flex">
+                              <div class="user justify-content-between d-flex">
+                                 <div class="thumb">
+                                    <img src="/img/comment/comment_1.png" alt="">
+                                 </div>
+                                 <div class="desc">
+                                    <p class="comment">' . $comment['content'] . '</p>
+                                    <div class="d-flex justify-content-between">
+                                       <div class="d-flex align-items-center">
+                                          <h5>
+                                             <a href="#">' . $comment['username'] . '</a>
+                                          </h5>
+                                          <p class="date">' . $comment['created_at'] . '</p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>';
+                      }
+                    ?>
+                </div>
+                <div class="comment-form">
+                    <h4>Leave a Comment</h4>
+                    <form class="form-contact comment_form" id="commentForm" method="POST" action="/create_comment.php">
+                        <input type="hidden" name="project_id" value=<?php echo $project[ 'project_id']?> />
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <textarea class="form-control w-100" name="message" id="message" cols="30" rows="9" placeholder="Write Comment" required="true"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="button button-contactForm btn_1 boxed-btn">Comment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--================ Blog Area end =================-->
+
+<?php include 'sidebar.php'?>
+<?php include 'footer.php'?>

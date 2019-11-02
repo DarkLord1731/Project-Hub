@@ -1,0 +1,64 @@
+<?php include 'header.php';?>
+
+<?php
+$para = array();
+$para['category_id'] = null;
+
+if(isset($_GET['category_id']) && $_GET['category_id']!=0)
+  $para['category_id'] = $_GET['category_id'];
+
+$category = get_category_list($para['category_id']);
+$projects = get_projects($para);
+?>
+
+<!-- bradcam_area_start -->
+<div class="bradcam_area breadcam_bg overlay2">
+    <?php if(sizeof($category) > 1):?>
+        <h3>All projects</h3>
+    <?php else:?>
+        <h3><?php echo $category[0]['name']?></h3>
+    <?php endif?>
+</div>
+<!-- bradcam_area_end -->
+
+<section class="blog_area section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mb-5 mb-lg-0">
+                <div class="blog_left_sidebar">
+                    <?php
+                        foreach($projects as $project){
+                            $id = $project['project_id'];
+                            $title = preg_replace('/\s+/', '-', $project['title']);
+                            $url = "/project/" . $id . "/" . $title;
+                            $date=date_create($project['created_at']);
+                            echo '
+                            <article class="blog_item">
+                                <div class="blog_item_img">
+                                    <a href="' . $url . '">
+                                        <img class="card-img rounded-0" src="' . $project['thumbnail'] . '" alt="" height=400>
+                                    </a>
+                                    <div class="blog_item_date">
+                                        <h3>' . date_format($date,"d") . '</h3>
+                                        <p>' . date_format($date,"M") . '</p>
+                                    </div>
+                                </div>
+
+                                <div class="blog_details">
+                                    <a class="d-inline-block" href="' . $url . '">
+                                        <h2>' . $project['title'] . '</h2>
+                                    </a>
+                                    <p>' . substr($project['content'], 0, 500) . '</p>
+                                    <ul class="blog-info-link">
+                                        <li><i class="fa fa-user"></i>' . $project['user_name'] . '</li>
+                                        <li><i class="fa fa-comments"></i>' . get_comment_count($project["project_id"]) . ' Comments</li>
+                                    </ul>
+                                </div>
+                            </article>';
+                            }
+                    ?>
+                </div>
+            </div>
+            
+<?php include 'sidebar.php'?>
+<?php include 'footer.php'?>

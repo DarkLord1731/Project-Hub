@@ -1,0 +1,162 @@
+<?php include 'header.php'?>
+
+<?php
+$para = array();
+if(isset($_GET['project_id']))
+  $para['project_id'] = $_GET['project_id'];
+
+if(isset($_GET['category_id']))
+  $para['category_id'] = $_GET['category_id'];
+
+$project = get_projects($para);
+$projects = get_projects();
+?>
+
+     <!-- bradcam_area_start -->     
+     <div class="courses_details_banner">
+         <div class="container">
+             <div class="row">
+                 <div class="col-xl-6">
+                     <div class="course_text">
+                        <h3><?php echo $project['title']?></h3>
+                        <div class="rating">
+                          <?php
+                          for ($x=0; $x < $project['rating']; $x++)
+                            echo '<i class="flaticon-mark-as-favorite-star"> </i>';
+                          ?>
+                        </div>
+                     </div>
+                </div>
+                <img class="img-fluid" src=<?php echo $project['thumbnail'];?> alt="" width=450>
+             </div>
+         </div>
+    </div>
+    <!-- bradcam_area_end -->
+
+
+<!-- popular_courses_start -->
+<div class="popular_courses">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="course_nav">
+                    <nav>
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="shipping_details-tab" data-toggle="tab" href="#shipping_details" role="tab" aria-controls="shipping_details" aria-selected="true">Shipping Details</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="all_courses">
+        <div class="container">
+            <div class="tab-content" id="myTabContent">
+
+                <!-- Shipping Details -->
+                <div class="tab-pane fade show active" id="shipping_details" role="tabpanel" aria-labelledby="shipping_details-tab">
+                    <div class="row">
+                      <form class="form-contact comment_form" id="newPostForm" method="POST" action="/purchase_successful.html">
+                         <div class="row">
+                            <div class="col-sm-6">
+                               <div class="form-group">
+                                  <input class="form-control" name="name" id="name" type="text" placeholder="Name" required="true">
+                               </div>
+                            </div>
+                            <div class="col-sm-6">
+                               <div class="form-group">
+                                  <input class="form-control" name="mob_no" id="mob_no" type="numbers" placeholder="Mobile Number" required="true">
+                               </div>
+                            </div>
+                            <div class="col-sm-6">
+                               <div class="form-group">
+                                  <input class="form-control" name="pincode" id="pincode" type="text" placeholder="Pincode" required="true">
+                               </div>
+                            </div>
+                            <div class="col-sm-6">
+                               <div class="form-group">
+                                  <input class="form-control" name="locality" id="locality" type="text" placeholder="Locality" required="true">
+                               </div>
+                            </div>
+                            <div class="col-12">
+                               <div class="form-group">
+                                  <textarea class="form-control w-100" name="address" id="address" cols="20" rows="4" 
+                                    placeholder="Address" required="true"></textarea>
+                               </div>
+                            </div>
+                            <div class="col-sm-6">
+                               <div class="form-group">
+                                  <input class="form-control" name="city" id="city" type="text" placeholder="City/District/Town" required="true">
+                               </div>
+                            </div>
+                            <div class="col-sm-6">
+                               <div class="form-group">
+                                  <input class="form-control" name="state" id="state" type="text" placeholder="State" required="true">
+                               </div>
+                            </div>
+                            <div class="switch-wrap d-flex justify-content-left col-12">
+                                <div class="primary-radio">
+                                    <input type="checkbox" id="default-radio" name="payment-type" onclick="onlyOne(this)" value=1>
+                                    <label for="default-radio"></label>
+                                </div>
+                                <pre> </pre><span>Credit / Debit / ATM Card</span>
+                            </div>
+                            <div class="col-sm-6">
+                               <div class="form-group">
+                                  <input class="form-control" name="title" id="title" type="numbers" placeholder="Enter Card Number">
+                               </div>
+                            </div>
+                            <div class="col-sm-6">
+                               <div class="form-group">
+                                  <input class="form-control" name="title" id="title" type="text" placeholder="CVV">
+                               </div>
+                            </div>
+                            <div class="col-sm-2 default-select" id="default-select">
+                                <select>
+                                    <?php
+                                        for($x=1; $x <= 12; $x++)
+                                            echo '<option value="'.$x.'">'.$x.'</option>';
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-2 default-select" id="default-select">
+                                <select>
+                                    <?php
+                                        for($x=date("Y"); $x < date("Y")+10; $x++)
+                                            echo '<option value="'.$x.'">'.$x.'</option>';
+                                    ?>
+                                </select>
+                            </div><p><br><br></p>
+                            <div class="switch-wrap d-flex justify-content-left col-12">
+                                <div class="primary-radio">
+                                    <input type="checkbox" id="primary-radio" name="payment-type" onclick="onlyOne(this)" value=2>
+                                    <label for="primary-radio"></label>
+                                </div>
+                                <pre> </pre><span>Cash On Delivery</span>
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <button type="submit" class="button button-contactForm btn_1 boxed-btn">Confirm Order</button>
+                         </div>
+                      </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+function onlyOne(checkbox) {
+    var checkboxes = document.getElementsByName('payment-type')
+    checkboxes.forEach((item) => {
+        if (item !== checkbox) item.checked = false
+    })
+};
+</script>
+<!-- popular_courses_end-->
+
+<?php include 'footer.php'?>
